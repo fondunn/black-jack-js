@@ -5,17 +5,10 @@ const field = document.getElementById('field')
 const playersContainer = document.getElementById('players-container')
 const status = document.getElementById('status')
 
-class RenderUI {
-    initField() {
-        
-    }
-
-}
+let playersCount = 4
 
 
 startGame.addEventListener('click', () => {
-    const game = new RenderUI()
-    game.initField()
     startGame.style.display = 'none'
 })
 
@@ -84,15 +77,14 @@ class Deck {
 
     getCard() {
         const last = this.deck[this.deck.length - 1]
-        this.deck.pop()
-        return last
+        return this.deck.pop()
     }
 }
 
 class Players {
     constructor(playersCount) {
         this.playersCount = playersCount;
-        this.activePlayer = null;
+        this.activePlayer = 0;
         this.players = []
     }
 
@@ -102,64 +94,106 @@ class Players {
                 playerId: i,
                 playerHand: [],
                 playerPoints: 0,
-                isActive: false
+                
             })
 
             
         }
     }
-    setActivePlayer(id) {
-        this.activePlayer = this.players[id]
+    setActivePlayer(x = 0) {
+        this.activePlayer = this.players[x].playerId;
     }
 
-    setCard(playerId, card) {
-        this.players[playerId].playerHand.push({card})
-        this.players[playerId].playerPoints += card.weight
+    setCard(card) {
 
-        status.innerText = players.players[0].playerPoints
+        this.players[this.activePlayer].playerHand.push({card})
 
-        if (this.players[playerId].playerPoints > 21) {
-            this.setActivePlayer(playerId+1)
+        this.players[this.activePlayer].playerPoints += card.weight
 
+        status.innerText = this.players[this.activePlayer].playerPoints
+
+        if (this.players[this.activePlayer].playerPoints > 21) {
+            status.innerText = players.players[0].playerPoints
+            this.activePlayer++
+            if ( this.activePlayer > this.playersCount ) {
+                console.log('all players finished')
+                
+            }
+            else {
+                let x = this.activePlayer
+                this.setActivePlayer(x)
+            }
         }
     }
 }
 
 
+class RenderUI {
+    constructor(count) {
+        this.count = count
+        this.playersCards = []
+    }
 
+    initField() {}
 
+    renderPlayer(title) {
+        const playerDiv = document.createElement('div')
+        playerDiv.classList.add('player')
+        const h2 = document.createElement('h2')
+        h2.innerText = `Player ${title+1}`
 
+        const playerCardList = document.createElement('div')
+        playerCardList.classList.add('p-card-list')
+        playersContainer.append(playerDiv)
+        
+        playerDiv.appendChild(h2)
 
+        playerDiv.appendChild(playerCardList)
+    }
 
+    renderPlayerCards(card) {
+        this.playersCards.push(card)
+
+        this.playersCards.map(item => {
+            const playerCardList = document.getElementsByClassName('p-card-list')
+            playerCardList.innerHTML(`dsdsds`)
+        })
+    }
+
+    renderPlayers() {
+        for( let i = 0; i < this.count; i++ ) {
+            this.renderPlayer(i)
+        }
+    }
+
+}
 
 
 const deck = new Deck();
+const players = new Players(playersCount);
+const render = new RenderUI(playersCount);
+
+render.renderPlayers()
+
 deck.createDeck();
 deck.shuffleDeck()
-const z = deck.getCard()
-const z1 = deck.getCard()
-const z2 = deck.getCard()
+
 
 console.log(deck.deck);
-const players = new Players(6);
+
 players.createPlayer()
 players.setActivePlayer(0)
 
-console.log(players.activePlayer);
+getCard.addEventListener('click', () => {
+    let card = deck.getCard()
+    players.setCard(card)
 
-players.setCard(0, z)
-players.setCard(0, z1)
-players.setCard(0, z2)
+    // console.log(card)
+    render.renderPlayerCards(card)
 
-console.log(players.activePlayer);
+})
 
-players.setCard(0, z)
-players.setCard(0, z1)
-players.setCard(0, z2)
 
-console.log(players.activePlayer);
-
-// status.innerText = players.players[0].playerPoints
 
 
 
