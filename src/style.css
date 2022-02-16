@@ -12,31 +12,48 @@ body {
     height: 100vh;
     width: 100vw;
     color: #fff;
+    background-color: rgb(48, 48, 48);
 }
 
 .game {
-    
-    background-color: rgb(48, 48, 48);
     width: 100vw;
     max-width: 1000px;
     height: 100vh;
-
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    
 }
 
 .nav-container {
-    background-color: #918f8f;
-
+    background-color: #038C65;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     width: 500px;
     border-radius: 5px;
+    margin-top: 20px;
+}
+
+.field-container {
+    width: 1000px;
+    height: 405px;
+    background-color: #fff;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+    border-bottom: 20px solid rgb(156, 156, 156);
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
     margin-top: 20px;
 }
 
@@ -70,12 +87,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    margin-top: 20px;
-
-    background-color: rgb(92, 151, 43);
-    border-radius:5px;
+    background-color: #025939;
+    /* border-radius:5px; */
+    height: 100%;
+    width: 100%;
 }
+
 
 .player {
     display: flex;
@@ -86,9 +103,34 @@ body {
     margin: 10px;
     padding: 0 10px;
     border-radius: 5px;
-    height: 80px;
-    width: 120px;
+    height: 200px;
+    width: 200px;
 }
+
+.player:first-child {
+    border-bottom-left-radius: 50px;
+}
+.player:last-child {
+    border-bottom-right-radius: 50px;
+}
+
+.p-card-list {
+    font-size: 1.76rem;
+    display: flex;
+    flex: 0.9;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.p-card-list span {
+    margin: 5px 2px;
+    border: 2px solid green;
+    text-align:center;
+    
+    width: 34px;
+}
+
 
 .active {
     border: 3px solid rgb(184, 170, 40);

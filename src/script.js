@@ -159,13 +159,9 @@ class UI {
         const playerContainer = document.getElementById(`player${id}`)
         playerContainer.classList.add('active')
 
-        const arr = cardArr.map((card, id) => {
-            return [
-                players.players[players.activePlayer].playerHand[id].card.suits,
-                players.players[players.activePlayer].playerHand[id].card.value,
-            ]
-        })
-        div.innerHTML = arr
+
+        const arr = cardArr.map(card => `<span>${card.card.suits} ${card.card.value}</span>`)
+        div.innerHTML = arr.map(el => el).join(' ')
         const total = document.getElementById(`player${id}-total`)
         total.innerHTML = `Total: ${players.players[players.activePlayer].playerPoints}`
     }
@@ -206,7 +202,7 @@ class Game {
 
     endGame() {
         let winnerPoints = 0
-        let winner = {}
+        let winner = null
         for (let i = 0; i < this.players.players.length; i++) {
             if (this.players.players[i].playerPoints > winnerPoints && this.players.players[i].playerPoints <= 21) {
                 winnerPoints = this.players.players[i].playerPoints
@@ -216,7 +212,11 @@ class Game {
 
         getCard.style.display = 'none'
         stay.style.display = 'none'
-        status.innerHTML = `winner is: Player ${winner.playerId+1}`
+
+        console.log(winner)
+        !winner? status.innerHTML = 'No winner :(' : status.innerHTML = `winner is: Player ${winner.playerId+1}`
+        
+        // status.innerHTML = `winner is: Player ${winner.playerId+1}`
         restart.style.display = 'block'
         this.restart()
     }
@@ -227,10 +227,9 @@ class Game {
             playerContainer.classList.remove('active')
             this.players.nextPlayer()
         }catch(e){
+            console.log(e);
             this.endGame()
         }
-
-        
     }
 
     check(){
@@ -245,8 +244,7 @@ class Game {
                 this.endGame();
             }
         }
-
-       
+        
     }
 
     restart() {
