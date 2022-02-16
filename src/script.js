@@ -2,12 +2,14 @@ const startGame = document.getElementById('start-game')
 const getCard = document.getElementById('get-card')
 const stay = document.getElementById('stay')
 const restart = document.getElementById('restart')
-restart.style.display = 'none'
-const field = document.getElementById('field')
+const field = document.getElementById('field-container')
 const playersContainerDIV = document.getElementById('players-container')
 const status = document.getElementById('status')
 
-
+restart.style.display = 'none'
+getCard.style.display = 'none'
+stay.style.display = 'none'
+status.innerText = ''
 
 let playersCount = 4
 
@@ -71,6 +73,8 @@ class Players {
         this.playersCount = playersCount;
         this.activePlayer = 0;
         this.players = []
+
+        this.ui = new UI();
     }
 
     createPlayer() {
@@ -86,25 +90,29 @@ class Players {
         this.activePlayer = this.players[x].playerId;
     }
 
-    setCard(card) {
-        if (this.players[this.activePlayer].playerPoints > 21) {
-            this.activePlayer++
-            status.innerText = 0
-            this.players[this.activePlayer].playerHand.push({ card })
-            this.players[this.activePlayer].playerPoints += card.weight
-            status.innerText = this.players[this.activePlayer].playerPoints
-        } 
-        else {
-            this.players[this.activePlayer].playerHand.push({ card })
-            this.players[this.activePlayer].playerPoints += card.weight
-            status.innerText = this.players[this.activePlayer].playerPoints
+    getActivePlayer(){
+        return this.players.find(p => p.playerId === this.activePlayer)
+    }
+
+    nextPlayer() {
+        const nextPlayerIndex = this.activePlayer + 1;
+        if(nextPlayerIndex >this.playersCount) {
+            throw new Error("Players end")
         }
+
+        this.setActivePlayer(nextPlayerIndex);
+    }
+
+    setCard(card) {
+        this.players[this.activePlayer].playerHand.push({ card })
+        this.players[this.activePlayer].playerPoints += card.weight
+        status.innerText = this.players[this.activePlayer].playerPoints
     }
 
     reset() {
         this.activePlayer = 0
         this.players = []
-        this.playersCount = 0
+        this.playersCount = 4
     }
 }
 
@@ -144,10 +152,13 @@ class UI {
         }
     }
     renderCard(players) {
-        console.log(players)
         const cardArr = players.players[players.activePlayer].playerHand
         const id = players.activePlayer + 1
         const div = document.getElementById(`player${id}-card-list`)
+
+        const playerContainer = document.getElementById(`player${id}`)
+        playerContainer.classList.add('active')
+
         const arr = cardArr.map((card, id) => {
             return [
                 players.players[players.activePlayer].playerHand[id].card.suits,
@@ -158,10 +169,6 @@ class UI {
         const total = document.getElementById(`player${id}-total`)
         total.innerHTML = `Total: ${players.players[players.activePlayer].playerPoints}`
     }
-
-    reset() {
-
-    }
 }
 
 class Game {
@@ -171,23 +178,33 @@ class Game {
         this.players = new Players(playersCount)
     }
 
+    getCardListener = () => {
+        let card = this.deck.getCard()
+        this.players.setCard(card)
+        this.ui.renderCard(this.players)
+        this.check();
+    }
+
+    stayListener = () => {
+        game.stay()
+    }
+
+    init() {
+        getCard.addEventListener('click', this.getCardListener)
+
+        stay.addEventListener('click', this.stayListener)
+    }
+
     startGame() {
-        console.log('Game started')
         this.deck.createDeck();
         this.deck.shuffleDeck()
         this.players.createPlayer()
-        this.players.setActivePlayer(0)
         this.ui.renderPlayers()
-        getCard.addEventListener('click', () => {
-            let card = this.deck.getCard()
-            this.players.setCard(card)
-            this.ui.renderCard(this.players)
-        })
+        getCard.style.display = 'flex'
+        stay.style.display = 'flex'
     }
 
     endGame() {
-        
-        console.log(this.players)
         let winnerPoints = 0
         let winner = {}
         for (let i = 0; i < this.players.players.length; i++) {
@@ -196,64 +213,62 @@ class Game {
                 winner = this.players.players[i]
             }
         }
-        console.log('winner is: Player ', winner.playerId+1)
 
         getCard.style.display = 'none'
         stay.style.display = 'none'
-
         status.innerHTML = `winner is: Player ${winner.playerId+1}`
-
         restart.style.display = 'block'
         this.restart()
-
     }
-
     stay() {
         status.innerHTML = 0
-        this.players.activePlayer++
-        if (this.players.activePlayer + 1 > playersCount) {
+        try{
+            const playerContainer = document.getElementById(`player${this.players.activePlayer+1}`)
+            playerContainer.classList.remove('active')
+            this.players.nextPlayer()
+        }catch(e){
             this.endGame()
         }
+
+        
+    }
+
+    check(){
+        const activePlayer = this.players.getActivePlayer();
+        if (activePlayer.playerPoints > 21) {
+            const playerContainer = document.getElementById(`player${this.players.activePlayer+1}`)
+            playerContainer.classList.remove('active')
+            status.innerText = 0
+            try{
+                this.players.nextPlayer();
+            }catch(e){
+                this.endGame();
+            }
+        }
+
+       
     }
 
     restart() {
         restart.addEventListener('click', () => {
             console.log('restart pressed')
-
             restart.style.display = 'none'
             startGame.style.display = 'flex'
-
-            getCard.style.display = 'flex'
-            stay.style.display = 'flex'
-
             status.innerHTML = 0
-
-            console.log(this.players)
-            //players reset
             this.players.reset()
-            //UI reset
-            this.ui.reset()
-            //Deck reset
             this.deck.reset()
-
-            console.log(this.players)
-
-            // const playerDiv = document.getElementById('players-container')
-            // playerDiv.innerHTML = ''
-
-
+            const playerDiv = document.getElementById('players-container')
+            playerDiv.innerHTML = ''
+            getCard.removeEventListener('click', this.getCardListener)
+            stay.removeEventListener('click', this.stayListener)
         })
     }
 }
 
-const game = new Game(4)
+const game = new Game()
 
 startGame.addEventListener('click', () => {
-    
     startGame.style.display = 'none'
     game.startGame()
-})
-
-stay.addEventListener('click', () => {
-    game.stay()
+    game.init()
 })
