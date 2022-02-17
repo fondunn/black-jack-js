@@ -1,0 +1,8 @@
+.btn-container{display:flex;margin:20px 0}
+.field-container{width:1000px;height:405px;background-color:#fff;border-bottom-left-radius:50%;border-bottom-right-radius:50%;border-top-left-radius:10px;border-top-right-radius:10px;border-bottom:20px solid #9c9c9c;overflow:hidden;display:flex;justify-content:center;align-items:center;position:relative;margin-top:20px}
+.game{width:100vw;max-width:1000px;height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column}
+*{margin:0;padding:0;box-sizing:border-box}body,button{display:flex;justify-content:center;align-items:center}body{flex-direction:column;height:100vh;width:100vw;color:#fff;background-color:#303030}button{font-size:1.5rem;width:100px;height:40px;margin:0 10px;padding:0 5px;border-radius:5px}
+.nav-container{background-color:#038c65;display:flex;justify-content:center;align-items:center;flex-direction:column;width:500px;border-radius:5px;margin-top:20px}
+.hidden{display:none}.active{border:3px solid #b8aa28}.failed{border:3px solid #da2d0f}
+.player,.players-container{display:flex;align-items:center}.players-container{justify-content:center;background-color:#025939;height:100%;width:100%}.player{flex-direction:column;background-color:#d1d1d1;color:#000;margin:10px;padding:0 10px;border-radius:5px;height:200px;width:200px}.player:first-child{border-bottom-left-radius:50px}.player:last-child{border-bottom-right-radius:50px}.p-card-list{font-size:1.76rem;display:flex;flex:.9;flex-direction:row;justify-content:center;align-items:center}.p-card-list span{margin:5px 2px;border:2px solid green;text-align:center;width:34px}
+.status{margin:10px;font-size:1.6rem}

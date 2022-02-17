@@ -1,0 +1,44 @@
+.players-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #025939;
+  /* border-radius:5px; */
+  height: 100%;
+  width: 100%;
+}
+.player {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: rgb(209, 209, 209);
+  color: black;
+  margin: 10px;
+  padding: 0 10px;
+  border-radius: 5px;
+  height: 200px;
+  width: 200px;
+
+  &:first-child {
+    border-bottom-left-radius: 50px;
+  }
+  &:last-child {
+    border-bottom-right-radius: 50px;
+  }
+}
+.p-card-list {
+  font-size: 1.76rem;
+  display: flex;
+  flex: 0.9;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    margin: 5px 2px;
+    border: 2px solid green;
+    text-align: center;
+
+    width: 34px;
+  }
+}
