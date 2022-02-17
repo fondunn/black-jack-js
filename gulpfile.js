@@ -39,14 +39,23 @@ function styles() {
 
 
 function scripts() {
-    return src('src/scripts/*.js')
+    return src([
+        './src/scripts/script.js',
+        './src/scripts/modules/*.js',
+        './src/scripts/gameStarter.js'    
+    ])
     .pipe(babel({
-        presets: ['@babel/env']
+        presets: ['@babel/env', {modules: false}]
     }))
     .pipe(concat('app.min.js'))
     
-    .pipe(uglify())
+    // .pipe(uglify())
     .pipe(dest('dist/'))
+}
+
+function composeScripts() {
+    return src('src/scripts/*.js')
+    .pipe(dest('./dist/js/'))
 }
 
 function clear() {
@@ -59,4 +68,4 @@ function startwatch() {
 }
 
 
-module.exports.build = series(clear, styles, html, scripts);
+module.exports.build = series(clear, html, styles, scripts);
