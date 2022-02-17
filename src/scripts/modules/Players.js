@@ -36,7 +36,7 @@ class Players {
     setCard(card) {
         this.players[this.activePlayer].playerHand.push({ card })
         this.players[this.activePlayer].playerPoints += card.weight
-        status.innerText = this.players[this.activePlayer].playerPoints
+        gameStatus.innerText = this.players[this.activePlayer].playerPoints
     }
 
     reset() {

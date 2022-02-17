@@ -40,19 +40,14 @@ class Game {
                 winner = this.players.players[i]
             }
         }
-
         getCard.style.display = 'none'
         stay.style.display = 'none'
-
-        console.log(winner)
-        !winner? status.innerHTML = 'No winner :(' : status.innerHTML = `winner is: Player ${winner.playerId+1}`
-        
-        // status.innerHTML = `winner is: Player ${winner.playerId+1}`
+        !winner? gameStatus.innerHTML = 'No winner :(' : gameStatus.innerHTML = `winner is: Player ${winner.playerId+1}`
         restart.style.display = 'block'
         this.restart()
     }
     stay() {
-        status.innerHTML = 0
+        gameStatus.innerHTML = 0
         try{
             const playerContainer = document.getElementById(`player${this.players.activePlayer+1}`)
             playerContainer.classList.remove('active')
@@ -68,22 +63,20 @@ class Game {
         if (activePlayer.playerPoints > 21) {
             const playerContainer = document.getElementById(`player${this.players.activePlayer+1}`)
             playerContainer.classList.remove('active')
-            status.innerText = 0
+            gameStatus.innerText = 0
             try{
                 this.players.nextPlayer();
             }catch(e){
                 this.endGame();
             }
         }
-        
     }
 
     restart() {
         restart.addEventListener('click', () => {
-            console.log('restart pressed')
             restart.style.display = 'none'
             startGame.style.display = 'flex'
-            status.innerHTML = 0
+            gameStatus.innerHTML = 0
             this.players.reset()
             this.deck.reset()
             const playerDiv = document.getElementById('players-container')
