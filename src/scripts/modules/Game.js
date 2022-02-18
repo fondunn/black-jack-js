@@ -1,8 +1,15 @@
+//removeIf(production)
+import UI from './UI.js'
+import Players from './Players.js'
+import Deck from './Deck.js'
+
+import  {startGame, gameStatus, getCard} from '../script.js'
+//endRemoveIf(production)
 class Game {
     constructor() {
-        this.ui = new UI(playersCount)
+        this.ui = new UI(4)
         this.deck = new Deck()
-        this.players = new Players(playersCount)
+        this.players = new Players(4)
     }
 
     getCardListener = () => {
@@ -13,7 +20,7 @@ class Game {
     }
 
     stayListener = () => {
-        game.stay()
+        this.stay()
     }
 
     init() {
@@ -53,7 +60,7 @@ class Game {
             playerContainer.classList.remove('active')
             this.players.nextPlayer()
         }catch(e){
-            console.log(e);
+            // console.log(e);
             this.endGame()
         }
     }
@@ -86,3 +93,6 @@ class Game {
         })
     }
 }
+//removeIf(production)
+export default Game
+//endRemoveIf(production)

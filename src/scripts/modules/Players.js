@@ -1,9 +1,13 @@
+//removeIf(production)
+import UI from './UI.js'
+import {gameStatus} from '../script.js'
+//endRemoveIf(production)
+
 class Players {
     constructor(playersCount) {
         this.playersCount = playersCount;
         this.activePlayer = 0;
         this.players = []
-
         this.ui = new UI();
     }
 
@@ -16,6 +20,7 @@ class Players {
             })
         }
     }
+    
     setActivePlayer(x = 0) {
         this.activePlayer = this.players[x].playerId;
     }
@@ -45,3 +50,6 @@ class Players {
         this.playersCount = 4
     }
 }
+//removeIf(production)
+export default  Players
+//endRemoveIf(production)

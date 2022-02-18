@@ -7,7 +7,9 @@ const uglify = require('gulp-uglify-es').default;
 const htmlmin = require('gulp-htmlmin');
 const removeHtmlComments = require('gulp-remove-html-comments');
 const csso = require('gulp-csso');
-const del = require('del')
+const del = require('del');
+const browserify = require('browserify');
+const removeCode = require('gulp-remove-code')
 
 function html() {
     return src('src/*.html')
@@ -30,7 +32,6 @@ function composeScripts() {
         './src/scripts/modules/*.js',
         './src/scripts/gameStarter.js'    
     ])
-    .pipe(concat('app.min.js'))
     .pipe(babel({
         presets: [
             [
@@ -40,8 +41,8 @@ function composeScripts() {
                 }
         ]]
     }))
-    
-    
+    .pipe(concat('app.min.js'))
+    .pipe(removeCode({ production: true }))
     .pipe(uglify())
     .pipe(dest('dist/'))
 }

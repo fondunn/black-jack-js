@@ -1,3 +1,6 @@
+//removeIf(production)
+import {playersContainerDIV} from '../script.js'
+//endRemoveIf(production)
 class UI {
     constructor(playerCount) {
         this.playerCard = []
@@ -41,10 +44,12 @@ class UI {
         const playerContainer = document.getElementById(`player${id}`)
         playerContainer.classList.add('active')
 
-
         const arr = cardArr.map(card => `<span>${card.card.suits} ${card.card.value}</span>`)
         div.innerHTML = arr.map(el => el).join(' ')
         const total = document.getElementById(`player${id}-total`)
         total.innerHTML = `Total: ${players.players[players.activePlayer].playerPoints}`
     }
 }
+//removeIf(production)
+export default UI
+//endRemoveIf(production)

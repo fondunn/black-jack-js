@@ -52,3 +52,6 @@ class Deck {
         this.deck = []
     }
 }
+//removeIf(production)
+export default  Deck
+//endRemoveIf(production)
